@@ -1,12 +1,8 @@
 import React from "react"
 import { graphql } from "gatsby"
 import PropTypes from "prop-types"
-import Avatar from "../components/Avatar"
-import ContactMe from "../components/ContactMe"
-import Layout from "../components/Layout-Page"
 import FadeIn from "../components/FadeIn"
-import SEO from "../components/seo"
-import GoogleMe from "../components/GoogleMe"
+
 
 class BlogPageHome extends React.Component {
   constructor(props) {
@@ -42,15 +38,7 @@ class BlogPageHome extends React.Component {
   render() {
     const { title, description, lang, keywords, ogUrl, ogType } = this.props
     return (
-      <Layout className="mh100" theme={this.state.theme} themer={this.themer}>
-        <SEO
-          title={title}
-          description={description}
-          lang={lang}
-          keywords={keywords}
-          ogUrl={ogUrl}
-          ogType={ogType}
-        />
+
         <div className="mw960">
           <div className=" margin10 textcenter">
             <div className="mB10 width100 textcenter oh">
@@ -76,13 +64,7 @@ class BlogPageHome extends React.Component {
               </FadeIn>
             </div>
           </div>
-          <div className="mt35">
-            <Avatar />
-            <ContactMe theme={this.state.theme} />
-            <GoogleMe />
-          </div>
         </div>
-      </Layout>
     )
   }
 }
