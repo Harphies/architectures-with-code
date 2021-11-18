@@ -64,7 +64,7 @@ class BlogPageHome extends React.Component {
                 className="ico20 inline "
                 style={{ animationDelay: "0.02s", lineHeight: "1.7em" }}
               >
-                {" I'm"}
+                {" Let's"}
               </FadeIn>
             </div>
             <div className="mB25 width100 textcenter oh">
@@ -72,7 +72,7 @@ class BlogPageHome extends React.Component {
                 className="fs40 inbl "
                 style={{ animationDelay: "0.05s", lineHeight: "1.7em" }}
               >
-                <h1 className="fs40 myname">Harphies</h1>
+                <h1 className="fs40 myname">Build the Future</h1>
               </FadeIn>
             </div>
           </div>
