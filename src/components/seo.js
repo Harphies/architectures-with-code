@@ -2,15 +2,24 @@
  * SEO component that queries for data with
  *  Gatsby's useStaticQuery React hook
  *
- * See: https://www.gatsbyjs.com/docs/use-static-query/
+ * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import * as React from "react"
+import React from "react"
 import PropTypes from "prop-types"
-import { Helmet } from "react-helmet"
+import Helmet from "react-helmet"
 import { useStaticQuery, graphql } from "gatsby"
 
-function Seo({ description, lang, meta, title }) {
+function SEO({
+  description,
+  lang,
+  meta,
+  keywords,
+  title,
+  ogUrl,
+  ogType,
+  image,
+}) {
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -19,6 +28,11 @@ function Seo({ description, lang, meta, title }) {
             title
             description
             author
+            keywords
+            ogUrl
+            ogType
+            image
+            lang
           }
         }
       }
@@ -26,64 +40,55 @@ function Seo({ description, lang, meta, title }) {
   )
 
   const metaDescription = description || site.siteMetadata.description
-  const defaultTitle = site.siteMetadata?.title
-
+  const metaTitle = title || site.siteMetadata.title
+  const metaType = ogType || site.siteMetadata.ogType
+  const metaUrl = ogUrl || site.siteMetadata.ogUrl
+  const metaImage = image || site.siteMetadata.image
+  const metaLang = site.siteMetadata.lang || "en"
+  console.log("image", image, metaImage)
   return (
     <Helmet
       htmlAttributes={{
-        lang,
+        lang: metaLang,
       }}
-      title={title}
-      titleTemplate={defaultTitle ? `%s | ${defaultTitle}` : null}
+      title={metaTitle}
       meta={[
-        {
-          name: `description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: site.siteMetadata?.author || ``,
-        },
-        {
-          name: `twitter:title`,
-          content: title,
-        },
-        {
-          name: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
+        { name: `description`, content: metaDescription },
+        { property: `og:title`, content: metaTitle },
+        { property: `og:description`, content: metaDescription },
+        { property: `og:type`, content: metaType },
+        { property: `og:url`, content: metaUrl },
+        { property: "og:image", content: metaImage },
+        { property: `twitter:title`, content: metaTitle },
+        { property: "twitter:description", content: metaDescription },
+        { name: "robots", content: "index, follow" },
+        { rel: "canonical", href: "https://harphies.tech/" },
+      ]
+        .concat(
+          keywords.length > 0
+            ? {
+                name: `keywords`,
+                content: keywords.join(`, `),
+              }
+            : []
+        )
+        .concat(meta)}
     />
   )
 }
 
-Seo.defaultProps = {
+SEO.defaultProps = {
   lang: `en`,
   meta: [],
-  description: ``,
+  keywords: [],
 }
 
-Seo.propTypes = {
+SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
+  meta: PropTypes.array,
+  keywords: PropTypes.arrayOf(PropTypes.string),
+  title: PropTypes.string,
 }
 
-export default Seo
+export default SEO

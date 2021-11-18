@@ -1,9 +1,40 @@
-exports.createPages = async ({ actions }) => {
+const path = require("path")
+exports.createPages = ({ actions, graphql }) => {
   const { createPage } = actions
-  createPage({
-    path: "/using-dsg",
-    component: require.resolve("./src/templates/using-dsg.js"),
-    context: {},
-    defer: true,
+  const postTemplate = path.resolve("src/templates/blog-post.js")
+  return graphql(`
+    {
+      allMarkdownRemark {
+        edges {
+          node {
+            id
+            frontmatter {
+              path
+              title
+              date
+              author
+              ogimage {
+                childImageSharp {
+                  fixed {
+                    src
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `).then(res => {
+    if (res.errors) {
+      return Promise.reject(res.errors)
+    }
+    const posts = res.data.allMarkdownRemark.edges
+    posts.forEach(({ node }) => {
+      createPage({
+        path: node.frontmatter.path,
+        component: postTemplate,
+      })
+    })
   })
 }
